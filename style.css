@@ -1,0 +1,495 @@
+/* 전역 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 헤더 스타일 */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.stats {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.score-display, .rate-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-label, .rate-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+#score, #rate {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.header-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.header-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 메인 게임 영역 */
+.game-main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 클릭 영역 */
+.click-area {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    min-height: 500px;
+}
+
+.main-clicker {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.main-clicker:hover {
+    transform: scale(1.05);
+}
+
+.main-clicker:active {
+    transform: scale(0.95);
+}
+
+.clicker-icon {
+    font-size: 8rem;
+    text-align: center;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+    transition: all 0.2s ease;
+}
+
+.click-counter {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #666;
+}
+
+/* 클릭 효과 애니메이션 */
+.click-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.click-effect {
+    position: absolute;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4facfe;
+    pointer-events: none;
+    animation: clickEffect 1s ease-out forwards;
+}
+
+@keyframes clickEffect {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px) scale(1.5);
+    }
+}
+
+/* 골든 쿠키 */
+.golden-cookie {
+    position: absolute;
+    font-size: 3rem;
+    cursor: pointer;
+    animation: goldenPulse 2s ease-in-out infinite;
+    transition: transform 0.2s ease;
+    z-index: 100;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.golden-cookie:hover {
+    transform: scale(1.2);
+}
+
+.golden-cookie.hidden {
+    pointer-events: none;
+}
+
+@keyframes goldenPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* 상점 영역 */
+.shop {
+    flex: 1;
+    background: #f8f9fa;
+    border-left: 3px solid #e9ecef;
+    overflow-y: auto;
+    max-height: calc(100vh - 120px);
+}
+
+.shop-tabs {
+    display: flex;
+    background: #e9ecef;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.shop-tab {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.shop-tab.active {
+    background: #4facfe;
+    color: white;
+}
+
+.shop-tab:hover:not(.active) {
+    background: #dee2e6;
+}
+
+.shop-content {
+    padding: 1rem;
+}
+
+.shop-section h3 {
+    margin-bottom: 1rem;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+}
+
+/* 건물 아이템 */
+.building-item, .upgrade-item, .achievement-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.building-item:hover, .upgrade-item:hover {
+    border-color: #4facfe;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+}
+
+.building-item.affordable, .upgrade-item.affordable {
+    border-color: #28a745;
+    background: #f8fff9;
+}
+
+.building-item.expensive, .upgrade-item.expensive {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.building-item.expensive:hover, .upgrade-item.expensive:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #e9ecef;
+}
+
+.item-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    min-width: 3rem;
+    text-align: center;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.item-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.2rem;
+}
+
+.item-stats {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.3rem;
+}
+
+.item-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #4facfe;
+    text-align: center;
+    min-width: 100px;
+}
+
+.item-count {
+    background: #4facfe;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+/* 업적 아이템 */
+.achievement-item {
+    cursor: default;
+}
+
+.achievement-item.unlocked {
+    border-color: #ffd700;
+    background: #fffdf0;
+}
+
+/* 하단 정보 */
+.game-footer {
+    background: #343a40;
+    color: white;
+    padding: 1rem 2rem;
+}
+
+.info-panel {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9rem;
+}
+
+/* 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 70vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #adb5bd;
+}
+
+.modal-close:hover {
+    color: #6c757d;
+}
+
+.modal-body {
+    padding: 1rem;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 알림 */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    animation: notificationSlide 0.3s ease-out;
+}
+
+@keyframes notificationSlide {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 유틸리티 클래스 */
+.hidden {
+    display: none !important;
+}
+
+.pulse {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .game-main {
+        flex-direction: column;
+    }
+    
+    .click-area {
+        min-height: 300px;
+    }
+    
+    .clicker-icon {
+        font-size: 5rem;
+    }
+    
+    .stats {
+        gap: 1rem;
+        font-size: 1rem;
+    }
+    
+    .header-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .info-panel {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-header {
+        padding: 0.5rem 1rem;
+    }
+    
+    .click-area {
+        padding: 1rem;
+    }
+    
+    .clicker-icon {
+        font-size: 4rem;
+    }
+    
+    .building-item, .upgrade-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .item-icon {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+}

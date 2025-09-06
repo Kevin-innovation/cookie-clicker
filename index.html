@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Clicker Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 헤더 영역 -->
+        <header class="game-header">
+            <div class="stats">
+                <div class="score-display">
+                    <span class="score-label">점수:</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="rate-display">
+                    <span class="rate-label">초당:</span>
+                    <span id="rate">0</span>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <button id="prestige-btn" class="header-btn">프레스티지</button>
+                <button id="save-btn" class="header-btn">저장</button>
+                <button id="load-btn" class="header-btn">불러오기</button>
+                <button id="reset-btn" class="header-btn">초기화</button>
+            </div>
+        </header>
+
+        <!-- 메인 게임 영역 -->
+        <main class="game-main">
+            <!-- 클릭 영역 -->
+            <section class="click-area">
+                <div class="main-clicker" id="main-clicker">
+                    <div class="clicker-icon">🍪</div>
+                    <div class="click-counter" id="click-counter">클릭하세요!</div>
+                </div>
+                
+                <!-- 골든 쿠키 영역 -->
+                <div id="golden-cookie" class="golden-cookie hidden">⭐</div>
+                
+                <!-- 클릭 효과 -->
+                <div id="click-effects" class="click-effects"></div>
+            </section>
+
+            <!-- 상점 영역 -->
+            <aside class="shop">
+                <!-- 건물 탭 -->
+                <div class="shop-tabs">
+                    <button class="shop-tab active" data-tab="buildings">건물</button>
+                    <button class="shop-tab" data-tab="upgrades">업그레이드</button>
+                    <button class="shop-tab" data-tab="achievements">업적</button>
+                </div>
+
+                <!-- 건물 리스트 -->
+                <div class="shop-content" id="buildings-tab">
+                    <div class="shop-section">
+                        <h3>자동 생산 건물</h3>
+                        <div class="buildings-list" id="buildings-list">
+                            <!-- 건물들이 동적으로 추가됨 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 업그레이드 탭 -->
+                <div class="shop-content hidden" id="upgrades-tab">
+                    <div class="shop-section">
+                        <h3>업그레이드</h3>
+                        <div class="upgrades-list" id="upgrades-list">
+                            <!-- 업그레이드들이 동적으로 추가됨 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 업적 탭 -->
+                <div class="shop-content hidden" id="achievements-tab">
+                    <div class="shop-section">
+                        <h3>업적</h3>
+                        <div class="achievements-list" id="achievements-list">
+                            <!-- 업적들이 동적으로 추가됨 -->
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- 하단 정보 -->
+        <footer class="game-footer">
+            <div class="info-panel">
+                <div class="total-buildings">
+                    <span>총 건물 수: </span>
+                    <span id="total-buildings">0</span>
+                </div>
+                <div class="total-clicks">
+                    <span>총 클릭 수: </span>
+                    <span id="total-clicks">0</span>
+                </div>
+                <div class="offline-time">
+                    <span>오프라인 시간: </span>
+                    <span id="offline-time">0초</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 모달 창들 -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">제목</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- 모달 내용 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 메시지 -->
+    <div id="notification" class="notification hidden">
+        <span id="notification-text">알림 메시지</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
