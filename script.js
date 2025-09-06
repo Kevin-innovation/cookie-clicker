@@ -550,14 +550,28 @@ function scheduleGoldenCookie() {
 // 프레스티지 관련 함수들
 function calculatePrestigePoints() {
     if (gameState.totalScore < 1000000) return 0;
-    return Math.floor(Math.sqrt(gameState.totalScore / 1000000));
+    
+    // 현재 프레스티지 레벨에 따라 요구사항이 기하급수적으로 증가
+    const baseRequirement = 1000000;
+    const currentLevel = gameState.prestigeLevel;
+    
+    // 각 프레스티지 레벨마다 요구사항이 10배씩 증가
+    const requiredScoreForNextLevel = baseRequirement * Math.pow(10, currentLevel);
+    
+    if (gameState.totalScore < requiredScoreForNextLevel) return 0;
+    
+    // 다음 레벨에 도달했으면 1포인트 지급
+    return 1;
 }
 
 function showPrestigeModal() {
     const prestigePoints = calculatePrestigePoints();
+    const baseRequirement = 1000000;
+    const requiredScoreForNextLevel = baseRequirement * Math.pow(10, gameState.prestigeLevel);
     
     if (prestigePoints < 1) {
-        showNotification('프레스티지 포인트가 부족합니다! (100만 점 필요)');
+        const shortfall = requiredScoreForNextLevel - gameState.totalScore;
+        showNotification(`프레스티지 포인트가 부족합니다! ${formatNumber(shortfall)} 점수 더 필요`);
         return;
     }
     
@@ -569,8 +583,11 @@ function showPrestigeModal() {
         <div style="text-align: center;">
             <h4>🌟 프레스티지 시스템 🌟</h4>
             <p>현재 프레스티지 레벨: ${gameState.prestigeLevel}</p>
+            <p>필요한 점수: ${formatNumber(requiredScoreForNextLevel)}</p>
+            <p>현재 총 점수: ${formatNumber(gameState.totalScore)}</p>
             <p>획득 가능한 프레스티지 포인트: <strong>${prestigePoints}</strong></p>
             <p>현재 프레스티지 보너스: <strong>+${gameState.prestigeLevel * 10}%</strong></p>
+            <p>다음 레벨 요구 점수: <strong>${formatNumber(baseRequirement * Math.pow(10, gameState.prestigeLevel + 1))}</strong></p>
             <br>
             <p>⚠️ 프레스티지를 하면 점수와 건물이 초기화됩니다!</p>
             <p>하지만 영구적인 생산량 보너스를 얻습니다.</p>
@@ -603,18 +620,18 @@ function performPrestige() {
         return;
     }
     
-    // 프레스티지 데이터 보존
+    // 프레스티지 데이터 보존 (totalScore는 프레스티지 후에도 유지되어야 함)
     gameState.prestigeLevel += prestigePoints;
     gameState.prestigePoints += prestigePoints;
     const preservedData = {
         prestigeLevel: gameState.prestigeLevel,
         prestigePoints: gameState.prestigePoints,
-        totalScore: gameState.totalScore,
+        totalScore: gameState.totalScore,  // 이 값은 프레스티지 계산에 필요하므로 유지
         goldenCookiesClicked: gameState.goldenCookiesClicked,
         achievements: {...gameState.achievements}
     };
     
-    // 게임 상태 초기화
+    // 게임 상태 초기화 (totalScore는 유지)
     gameState = {
         ...gameState,
         score: 0,
@@ -637,7 +654,8 @@ function performPrestige() {
     renderAchievements();
     updateDisplay();
     
-    showNotification(`프레스티지 완료! +${prestigePoints} 레벨! (+${prestigePoints * 10}% 보너스)`);
+    const nextLevelRequirement = 1000000 * Math.pow(10, gameState.prestigeLevel);
+    showNotification(`프레스티지 완료! 레벨 ${gameState.prestigeLevel}! 다음 레벨 요구: ${formatNumber(nextLevelRequirement)}`);
 }
 
 // 알림 표시
@@ -1027,6 +1045,28 @@ function testCursorVsGrandma() {
     console.log('- 둘 다: 완전히 다른 역할이므로 모두 필요!');
 }
 
+// 테스트용 프레스티지 시스템 분석 함수
+function testPrestigeSystem() {
+    console.log('=== 🌟 프레스티지 시스템 분석 ===');
+    console.log(`현재 프레스티지 레벨: ${gameState.prestigeLevel}`);
+    console.log(`현재 총 점수: ${formatNumber(gameState.totalScore)}`);
+    
+    const baseRequirement = 1000000;
+    for (let level = 0; level <= gameState.prestigeLevel + 3; level++) {
+        const requiredScore = baseRequirement * Math.pow(10, level);
+        const available = gameState.totalScore >= requiredScore ? '✅' : '❌';
+        console.log(`레벨 ${level}: ${formatNumber(requiredScore)} 점수 필요 ${available}`);
+    }
+    
+    const currentPrestigePoints = calculatePrestigePoints();
+    console.log(`\n현재 획득 가능한 프레스티지 포인트: ${currentPrestigePoints}`);
+    
+    if (currentPrestigePoints > 0) {
+        const nextLevelRequirement = baseRequirement * Math.pow(10, gameState.prestigeLevel + 1);
+        console.log(`다음 프레스티지까지 필요한 점수: ${formatNumber(nextLevelRequirement)}`);
+    }
+}
+
 // 게임 시작
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM 로드 완료, 게임 초기화 시작...');
@@ -1039,6 +1079,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.testBuyBuilding = testBuyBuilding;
     window.testBuyAllBuildings = testBuyAllBuildings;
     window.testCursorVsGrandma = testCursorVsGrandma;
+    window.testPrestigeSystem = testPrestigeSystem;
     console.log('디버그 함수 등록 완료:');
     console.log('- debugGame(): 게임 상태 확인');
     console.log('- addTestScore(amount): 테스트 점수 추가');
@@ -1046,4 +1087,5 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('- testBuyBuilding(key, amount): 특정 건물 구매');
     console.log('- testBuyAllBuildings(): 모든 건물 1개씩 구매');
     console.log('- testCursorVsGrandma(): 커서와 할머니 비교 분석');
+    console.log('- testPrestigeSystem(): 프레스티지 시스템 분석');
 });
