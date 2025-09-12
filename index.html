@@ -11,6 +11,10 @@
         <!-- 헤더 영역 -->
         <header class="game-header">
             <div class="stats">
+                <div class="prestige-display">
+                    <span class="prestige-label">P</span>
+                    <span id="prestige-level">0</span>
+                </div>
                 <div class="score-display">
                     <span class="score-label">점수:</span>
                     <span id="score">0</span>
@@ -96,9 +100,9 @@
                     <span>총 클릭 수: </span>
                     <span id="total-clicks">0</span>
                 </div>
-                <div class="offline-time">
-                    <span>오프라인 시간: </span>
-                    <span id="offline-time">0초</span>
+                <div class="click-ranking">
+                    <span>1분 최고: </span>
+                    <span id="max-clicks-minute">0</span><span>클릭</span>
                 </div>
             </div>
         </footer>
